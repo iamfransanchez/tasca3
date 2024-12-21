@@ -52,10 +52,16 @@ def predict(model_name):
     )
 
     prediction = model.predict(input_data)
+    prediction_probabilities = model.predict_proba(input_data)
 
     predicted_species = species_mapping[int(prediction[0])]
+    predicted_probability = prediction_probabilities[0][int(prediction[0])] * 100  # Porcentaje
 
-    return jsonify({"prediction": predicted_species})
+
+    return jsonify({
+        "prediction": predicted_species,
+        "probability": round(predicted_probability, 2)
+    })
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=3000)
+    app.run(host="127.0.0.1", port=4000)
